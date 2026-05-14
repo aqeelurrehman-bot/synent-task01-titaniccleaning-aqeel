@@ -1,0 +1,32 @@
+import pandas as pd
+
+# Load dataset
+df = pd.read_csv("Titanic-Dataset.csv")
+
+# Show missing values before cleaning
+print("Before Cleaning:\n")
+print(df.isnull().sum())
+
+# Fill numeric columns with mean
+df['Age'] = df['Age'].fillna(df['Age'].mean())
+df['Fare'] = df['Fare'].fillna(df['Fare'].mean())
+
+# Fill text columns with mode
+df['Embarked'] = df['Embarked'].fillna(df['Embarked'].mode()[0])
+
+# Drop Cabin column because too many missing values
+if 'Cabin' in df.columns:
+    df.drop('Cabin', axis=1, inplace=True)
+
+# Remove duplicates
+df.drop_duplicates(inplace=True)
+
+# Show missing values after cleaning
+print("\nAfter Cleaning:\n")
+print(df.isnull().sum())
+
+# Save cleaned file
+df.to_csv("cleaned_titanic.csv", index=False)
+
+print("\nDataset cleaned successfully!")
+print (df.info())
